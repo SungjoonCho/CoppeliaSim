@@ -1,5 +1,8 @@
 # Creating mesh shape in CoppeliaSim with Depth frame from realsense in real time
 
+https://drive.google.com/file/d/1z_aE5cYs1IBOqVfWEv6FC7Ri53AQjjeH/view?usp=sharing
+
+
 CoppeliaSim 설치, ROS 연결 : https://github.com/SungjoonCho/CoppeliaSim_multiRGBD
 
 ### Publishing realsense D435i depth frame
@@ -20,7 +23,7 @@ callback func에서 depth frame 전체를 Uint16으로 변환해주고 table로 
 여기서 테이블을 파이썬으로 치면 list 정도라고 생각하면 된다.
 </pre>
 
-Vertices
+Vertices, Indicies
 
 <pre>
 Depth frame은 2차원 배열이지만 일렬로 늘어뜨린 1차원 배열이라고 생각하고 진행해야 한다. 각 요소 값은 depth value이다. 
@@ -32,4 +35,15 @@ x는 각 픽셀의 행, y는 열,z는 depth value로 지정하고 table에 순�
 이 때 z의 인덱스는 x,y를 이용해서 구한다. 
 
 주의할 점은 lua의 table index는 1부터 시작이다.
+
+Indices table은 우상단이 90도인 직각삼각형(depth가 모두 0일 때 기준)의 연속인 mesh를 그리기 위해
+삼각형의 정점 3개가 차례 차례 삽입되도록 하였다.
+
+<p align="center">
+  <img width="400" src="https://user-images.githubusercontent.com/80872528/123391884-6db20400-d5d7-11eb-9b1e-8d8c33ec0018.png">
+</p>
+
+vertices, indices 구성하는 방법 참고 : https://forum.coppeliarobotics.com/viewtopic.php?t=7920
 </pre>
+
+mesh shape이 반복해서 생성되고 제거되도록 만듦.
