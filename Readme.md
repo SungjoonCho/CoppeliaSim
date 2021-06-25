@@ -5,6 +5,11 @@
 https://drive.google.com/file/d/1z_aE5cYs1IBOqVfWEv6FC7Ri53AQjjeH/view?usp=sharing
 </pre>
 
+<p align="center">
+  <img width="700" src="https://user-images.githubusercontent.com/80872528/123393412-09903f80-d5d9-11eb-8b4e-9350b62a2433.png">
+</p>
+
+
 ### CoppeliaSim 설치, ROS 연결
 <pre>
 https://github.com/SungjoonCho/CoppeliaSim_multiRGBD
