@@ -20,6 +20,8 @@ https://github.com/SungjoonCho/CoppeliaSim_multiRGBD
 https://github.com/IntelRealSense/realsense-ros
 </pre>
 
+### Mesh 디렉토리 파일 이용 
+
 ### Calculating vertices, indices
 
 Plane의 child script에서 depth frame 각 픽셀 값 이용해 계산, 데이터 삽입(언어는 lua)
@@ -71,3 +73,5 @@ https://drive.google.com/file/d/14kTUQ0jgJZD7q04P1JKOHyeVGNuQaY-y/view?usp=shari
 <p align="center">
   <img width="700" src="https://user-images.githubusercontent.com/80872528/123582361-9ffe7400-d818-11eb-9d63-443d76d0f7ed.png">
 </p>
+
+### Pointcloud 디렉토리 이용
