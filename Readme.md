@@ -1,4 +1,4 @@
-# Creating mesh shape in CoppeliaSim with Depth frame from realsense in real time
+# Creating mesh shape in CoppeliaSim with Depth frame from realsense in online
 
 영상 링크
 <pre>
@@ -58,3 +58,16 @@ vertices, indices 구성하는 방법 참고 : https://forum.coppeliarobotics.co
 </pre>
 
 mesh shape이 반복해서 생성되고 제거되도록 만듦.
+
+
+# Creating pointcloud in CoppeliaSim with Depth frame from realsense in online
+
+
+영상 링크
+<pre>
+https://drive.google.com/file/d/14kTUQ0jgJZD7q04P1JKOHyeVGNuQaY-y/view?usp=sharing
+</pre>
+
+<p align="center">
+  <img width="700" src="https://user-images.githubusercontent.com/80872528/123582361-9ffe7400-d818-11eb-9d63-443d76d0f7ed.png">
+</p>
