@@ -1,4 +1,127 @@
-# Creating mesh shape in CoppeliaSim with Depth frame from realsense in online
+## CoppeliaSim
+
+* Pulblishing frames with Multi Sensor (Using ROS) - RGBD
+* Creating mesh shape in CoppeliaSim with Depth frame from realsense in online (Using ROS)
+* Creating pointcloud in CoppeliaSim with Depth frame from realsense in online (Using ROS)
+* Controlling pose with ROS 
+
+---
+
+## Environment
+
+* OS : Ubunutu 18.04
+* ROS : Melodic
+* RGBD sensor feature : Realsense D435i
+* CoppeliaSim version : Edu
+
+
+## Installing CoppeliaSim
+
+1. https://www.coppeliarobotics.com/downloads 에서 "choose a different platform?" 확인하여 OS version 확인 후 edu 버전 다운로드
+2. 압축 해제 후 Home으로 이동, 디렉토리 이름은 CoppeliaSim으로 변경
+3. sudo gedit ~/.bashrc
+4. 맨 아랫줄에 export COPPELIASIM_ROOT_DIR=$home/jskimlab/CoppeliaSim 추가하고 나오기
+5. cd CoppeliaSim/
+6. source ~/.bashrc
+7. ./coppeliaSim.sh
+
+
+참고 : https://www.youtube.com/watch?v=ym5Fveh_yF4
+
+
+
+## Connecting ROS 
+
+<pre>
+./coppeliaSim.sh 실행시 ROS interface와 연결하지 않았기 때문에 아래와 같은 로그가 출력될 것이다.
+
+[CoppeliaSim:loadinfo]   plugin 'ROS': loading...
+[CoppeliaSim:loadinfo]   plugin 'ROS': load failed.
+
+Terminal 1
+1. mkdir -p catkin_ws/src
+2. /CoppeliaSim/programming/ros_packages의 ros_bubble_rob, sim_ros_interface를 catkin_ws/src로 복사
+3. export COPPELIASIM_ROOT_DIR=~/path/to/coppeliaSim/folder (본인 CoppeliaSim 디렉토리 path 입력)
+4. catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release (catkin build 하려면 catkin_tool 설치 필요)
+
+Terminal 2
+1. roscore
+
+Terminal 3
+1. cd CoppeliaSim/
+2. source ~/.bashrc
+3. ./coppeliaSim.sh
+
+[CoppeliaSim:loadinfo]   plugin 'ROS': loading...
+[CoppeliaSim:loadinfo]   plugin 'ROS': load succeeded.
+
+잘 출력되면 성공
+
+참고 : https://www.coppeliarobotics.com/helpFiles/en/ros1Tutorial.htm
+
+</pre>
+
+## Scene
+
+<pre>
+기본적인 조작법 참고
+https://www.youtube.com/watch?v=PwGY8PxQOXY
+
+scene 구성
+1. 좌측의 Model browser에서 필요한 model 드래그&드롭
+2. File - Save Scene
+</pre>
+
+---
+
+# CoppeliaSim Multi Sensor - RGBD
+
+CoppeliaSim의 Scene에 RGBD sensor 여러 개를 달아 각 방향에서 보이는 rgb frame, depth frame을 ROS로 publish
+
+
+## Sensor
+
+<p align="center">
+  <img width="700" src="https://user-images.githubusercontent.com/80872528/122317570-bd019000-cf58-11eb-9169-383f38cacb17.png">
+</p>
+
+<pre>
+Model broswer - componets - sensors - spherical vision sensor RGB+depth.ttm
+
+child script(plugin)에서 simulation setting, ros publish & subscribe 가능
+
+getObjectHandle로 sensor 읽어옴
+각종 parameter로 realsense D435i와 동일하게 설정(FOV, resolution 등)
+setObjectInt32Param로 simulation 속 sensor 동작 설정(위에서 설정한 파라미터 값 부여)
+adjustView로 CoppliaSim 내에서 촬영 중인 창 실시간 확인 및 조정
+
+simROS로 ros 관련 값 설정
+advertise(topic name, 자료형 type)
+sysCall_sensing에서 sensor로부터 실제 data 읽어오고 publish 값 설정 및 publish
+
+기본 child script는 rgb, depth 모두 같은 파라미터를 쓰고 있기 때문에 realsense D435i parameter와 동일하게 만들기 위해 
+두 sensor 모두 다른 paramter 적용하도록 수정함, topic도 다른 Sensor에서 이용 가능하도록(겹치지 않도록) Object의 number를 이용하여 추가 설정
+</pre>
+
+## 추가로 sensor 부착시
+
+<pre>
+동일한 Sensor 가져오고 object_num과 topic_num만 number와 동일하게 수정 ex) '#2', '2'
+프로그래밍 언어 lua 이용 참고
+</pre>
+
+## Rviz
+<pre>
+$ rosrun rviz rviz
+</pre>
+
+<p align="center">
+  <img width="700" src="https://user-images.githubusercontent.com/80872528/122323270-ca6f4800-cf61-11eb-80b6-4e766a038f76.png">
+</p>
+
+---
+
+# Creating mesh shape in CoppeliaSim with Depth frame from realsense in online (Using ROS)
 
 영상 링크
 <pre>
@@ -61,8 +184,9 @@ vertices, indices 구성하는 방법 참고 : https://forum.coppeliarobotics.co
 
 mesh shape이 반복해서 생성되고 제거되도록 만듦.
 
+---
 
-# Creating pointcloud in CoppeliaSim with Depth frame from realsense in online
+# Creating pointcloud in CoppeliaSim with Depth frame from realsense in online (Using ROS)
 
 
 영상 링크
@@ -76,122 +200,15 @@ https://drive.google.com/file/d/14kTUQ0jgJZD7q04P1JKOHyeVGNuQaY-y/view?usp=shari
 
 ### Pointcloud 디렉토리 이용
 
+---
 
-# CoppeliaSim - controlling pose with ROS 
+# Controlling pose with ROS 
 
 
 <p align="center">
   <img width="700" src="https://user-images.githubusercontent.com/80872528/123583716-0edccc80-d81b-11eb-9233-477551716ade.png">
 </p>
 
-# CoppeliaSim_multiRGBD
-
-CoppeliaSim의 Scene에 RGBD sensor 여러 개를 달아 각 방향에서 보이는 rgb frame, depth frame을 ROS로 publish
-
-<pre>
-OS : Ubunutu 18.04
-ROS : Melodic
-RGBD sensor feature : Realsense D435i
-CoppeliaSim version : Edu
-</pre>
-
-## Installing coppeliSim
-<pre>
-1. https://www.coppeliarobotics.com/downloads 에서 "choose a different platform?" 확인하여 OS version 확인 후 edu 버전 다운로드
-2. 압축 해제 후 Home으로 이동, 디렉토리 이름은 CoppeliaSim으로 변경
-3. sudo gedit ~/.bashrc
-4. 맨 아랫줄에 export COPPELIASIM_ROOT_DIR=$home/jskimlab/CoppeliaSim 추가하고 나오기
-5. cd CoppeliaSim/
-6. source ~/.bashrc
-7. ./coppeliaSim.sh
-
-
-참고 : https://www.youtube.com/watch?v=ym5Fveh_yF4
-</pre>
-
-
-## Connect ROS 
-
-<pre>
-./coppeliaSim.sh 실행시 ROS interface와 연결하지 않았기 때문에 아래와 같은 로그가 출력될 것이다.
-
-[CoppeliaSim:loadinfo]   plugin 'ROS': loading...
-[CoppeliaSim:loadinfo]   plugin 'ROS': load failed.
-
-Terminal 1
-1. mkdir -p catkin_ws/src
-2. /CoppeliaSim/programming/ros_packages의 ros_bubble_rob, sim_ros_interface를 catkin_ws/src로 복사
-3. export COPPELIASIM_ROOT_DIR=~/path/to/coppeliaSim/folder (본인 CoppeliaSim 디렉토리 path 입력)
-4. catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release (catkin build 하려면 catkin_tool 설치 필요)
-
-Terminal 2
-1. roscore
-
-Terminal 3
-1. cd CoppeliaSim/
-2. source ~/.bashrc
-3. ./coppeliaSim.sh
-
-[CoppeliaSim:loadinfo]   plugin 'ROS': loading...
-[CoppeliaSim:loadinfo]   plugin 'ROS': load succeeded.
-
-잘 출력되면 성공
-
-참고 : https://www.coppeliarobotics.com/helpFiles/en/ros1Tutorial.htm
-
-</pre>
-
-## Scene
-
-<pre>
-기본적인 조작법 참고
-https://www.youtube.com/watch?v=PwGY8PxQOXY
-
-scene 구성
-1. 좌측의 Model browser에서 필요한 model 드래그&드롭
-2. File - Save Scene
-</pre>
-
-
-<p align="center">
-  <img width="700" src="https://user-images.githubusercontent.com/80872528/122317570-bd019000-cf58-11eb-9169-383f38cacb17.png">
-</p>
-
-## Sensor
-
-<pre>
-Model broswer - componets - sensors - spherical vision sensor RGB+depth.ttm
-
-child script(plugin)에서 simulation setting, ros publish & subscribe 가능
-
-getObjectHandle로 sensor 읽어옴
-각종 parameter로 realsense D435i와 동일하게 설정(FOV, resolution 등)
-setObjectInt32Param로 simulation 속 sensor 동작 설정(위에서 설정한 파라미터 값 부여)
-adjustView로 CoppliaSim 내에서 촬영 중인 창 실시간 확인 및 조정
-
-simROS로 ros 관련 값 설정
-advertise(topic name, 자료형 type)
-sysCall_sensing에서 sensor로부터 실제 data 읽어오고 publish 값 설정 및 publish
-
-기본 child script는 rgb, depth 모두 같은 파라미터를 쓰고 있기 때문에 realsense D435i parameter와 동일하게 만들기 위해 
-두 sensor 모두 다른 paramter 적용하도록 수정함, topic도 다른 Sensor에서 이용 가능하도록(겹치지 않도록) Object의 number를 이용하여 추가 설정
-</pre>
-
-## 추가로 sensor 부착시
-
-<pre>
-동일한 Sensor 가져오고 object_num과 topic_num만 number와 동일하게 수정 ex) '#2', '2'
-프로그래밍 언어 lua 이용 참고
-</pre>
-
-## Rviz
-<pre>
-$ rosrun rviz rviz
-</pre>
-
-<p align="center">
-  <img width="700" src="https://user-images.githubusercontent.com/80872528/122323270-ca6f4800-cf61-11eb-80b6-4e766a038f76.png">
-</p>
 
 ## Reference
 <pre>
